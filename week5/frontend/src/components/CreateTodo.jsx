@@ -16,7 +16,6 @@ export function CreateTodo({ onTodoCreated }) {
       },
     }).then(async function (res) {
       const json = await res.json();
-      alert("Todo added Successfully");
       setTitle("");
       setDescription("");
       // Call the refresh function to update the todos list
@@ -27,27 +26,37 @@ export function CreateTodo({ onTodoCreated }) {
   };
 
   return (
-    <div>
-      <input
-        style={{ padding: "10px", margin: "10px" }}
-        type="text"
-        placeholder="title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <br />
-      <input
-        style={{ padding: "10px", margin: "10px" }}
-        type="text"
-        placeholder="description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <br />
+    <div className="create-todo-container">
+      <h3 className="create-todo-title">➕ Create New Todo</h3>
+      <p className="create-todo-subtitle">Add a new task to your list</p>
+
+      <div className="form-group">
+        <label className="form-label">Title</label>
+        <input
+          className="form-input"
+          type="text"
+          placeholder="Enter todo title..."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Description</label>
+        <textarea
+          className="form-textarea"
+          placeholder="Enter todo description..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows="3"
+        />
+      </div>
+
       <button
-        style={{ padding: "10px", margin: "10px" }}
-        onClick={handleAddTodo}>
-        Add a Todo
+        className="create-todo-button"
+        onClick={handleAddTodo}
+        disabled={!title.trim() || !description.trim()}>
+        ✨ Add Todo
       </button>
     </div>
   );

@@ -18,7 +18,6 @@ const handleDelete = (todo, onTodoDeleted) => {
       }),
     }).then(async function (res) {
       const json = await res.json();
-      alert("Todo should have been deleted");
       // Call the refresh function to update the todos list
       if (onTodoDeleted) {
         onTodoDeleted();
@@ -41,7 +40,6 @@ const handleComplete = (todo, onTodoDeleted) => {
       }),
     }).then(async function (res) {
       const json = await res.json();
-      alert("Todo marked as completed");
       // Call the refresh function to update the todos list
       if (onTodoDeleted) {
         onTodoDeleted();
@@ -53,20 +51,52 @@ const handleComplete = (todo, onTodoDeleted) => {
 };
 
 export function Todos({ todos, onTodoDeleted }) {
-  return todos.map((todo) => (
-    <div key={todo._id}>
-      <h1>{todo.title}</h1>
-      <p>{todo.description}</p>
-      <button
-        onClick={() => handleComplete(todo, onTodoDeleted)}
-        disabled={todo.completed}
-        style={{
-          backgroundColor: todo.completed ? "#4CAF50" : "#f0f0f0",
-          color: todo.completed ? "white" : "black",
-        }}>
-        {todo.completed ? "Completed" : "Mark as completed"}
-      </button>
-      <button onClick={() => handleDelete(todo, onTodoDeleted)}>Delete</button>
+  if (todos.length === 0) {
+    return (
+      <div className="empty-state">
+        <div className="empty-icon">📝</div>
+        <h3 className="empty-title">No todos yet</h3>
+        <p className="empty-description">
+          Create your first todo to get started!
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="todos-grid">
+      {todos.map((todo) => (
+        <div
+          key={todo._id}
+          className={`todo-card ${todo.completed ? "completed" : ""}`}>
+          <div className="todo-header">
+            <h3 className="todo-title">{todo.title}</h3>
+            <div
+              className={`todo-status ${
+                todo.completed ? "completed" : "pending"
+              }`}>
+              {todo.completed ? "✅" : "⏳"}
+            </div>
+          </div>
+
+          <p className="todo-description">{todo.description}</p>
+
+          <div className="todo-actions">
+            <button
+              className={`complete-button ${todo.completed ? "completed" : ""}`}
+              onClick={() => handleComplete(todo, onTodoDeleted)}
+              disabled={todo.completed}>
+              {todo.completed ? "Completed" : "Mark Complete"}
+            </button>
+
+            <button
+              className="delete-button"
+              onClick={() => handleDelete(todo, onTodoDeleted)}>
+              🗑️ Delete
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
-  ));
+  );
 }

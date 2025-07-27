@@ -22,11 +22,57 @@ function App() {
     fetchTodos();
   }, []);
 
+  const completedTodos = todos.filter((todo) => todo.completed).length;
+  const pendingTodos = todos.length - completedTodos;
+
   return (
-    <>
-      <CreateTodo onTodoCreated={fetchTodos} />
-      <Todos todos={todos} onTodoDeleted={fetchTodos} />
-    </>
+    <div className="app-container">
+      <div className="app-header">
+        <h1 className="app-title">✨ Todo App</h1>
+        <p className="app-subtitle">Organize your life, one task at a time</p>
+      </div>
+
+      <div className="app-content">
+        <div className="create-todo-section">
+          <CreateTodo onTodoCreated={fetchTodos} />
+        </div>
+
+        <div className="todos-section">
+          <h2 className="todos-title">
+            {todos.length === 0
+              ? "No todos yet"
+              : `Your Todos (${todos.length})`}
+          </h2>
+          <Todos todos={todos} onTodoDeleted={fetchTodos} />
+        </div>
+      </div>
+
+      <footer className="footer-section">
+        <div className="footer-stats">
+          <div className="stat-item">
+            <span className="stat-number">{todos.length}</span>
+            <span className="stat-label">Total Tasks</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number completed">{completedTodos}</span>
+            <span className="stat-label">Completed</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number pending">{pendingTodos}</span>
+            <span className="stat-label">Pending</span>
+          </div>
+        </div>
+
+        <div className="footer-info">
+          <p className="footer-text">Made with ❤️ for productivity</p>
+          <div className="footer-links">
+            <span className="footer-link">React</span>
+            <span className="footer-link">Express</span>
+            <span className="footer-link">MongoDB</span>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
 
